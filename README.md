@@ -2,6 +2,8 @@
 
 **Welcome to the Unified Conscious Evolution Framework** - providing the practical architecture to co-create a future rooted in trust, care, ecological wisdom, and the full expression of human potential. It's a living library, an action toolkit, and a collaborative frontier for building a world that thrives by enhancing life, preparing humanity for conscious cosmic stewardship.
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dj-ccs/Unified-Conscious-Evolution-Framework)
+
 ---
 
 ## 🧬 Why This Exists: The Call for a New Operating System
