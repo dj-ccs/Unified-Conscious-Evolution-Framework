@@ -48,6 +48,42 @@ The UCF is a holistic operating system, built upon interconnected pillars and gr
 *   **🔥 Cultural, Scientific & Ancestral Resonance via the Wiki**
     Indigenous knowledge, traditional wisdom ("buried blueprints"), artistic expression, and rigorous scientific inquiry are respectfully documented, validated where appropriate, and woven together within the **Knowledge Commons wiki**, collaboratively shaping AI learning, regenerative practice, and civilizational development.
 
+*   **🔗 Multi-Chain Interoperability Architecture**
+    Rather than competing with established blockchain platforms, UCF leverages **Metallicus** as the interoperability layer, providing identity (XPR Network), compliance, and programmability that orchestrates multiple specialized chains. See [`docs/metallicus-interoperability-thesis.md`](docs/metallicus-interoperability-thesis.md) for the complete strategic analysis.
+
+---
+
+## 🔄 UCF ↔ EHDC: Parallel Development Strategy
+
+The **Unified Conscious Evolution Framework** (this repository) provides the comprehensive vision, while the **[EHDC Repository](https://github.com/dj-ccs/EHDC)** serves as the active implementation laboratory for Pillar IV (Ecosystem Partnership).
+
+**Two Repositories, Complementary Purposes:**
+
+*   **UCF (This Repository) = "The North Star"**
+    *   Comprehensive documentation of all four pillars
+    *   Theoretical foundations and architectural vision
+    *   Long-term strategic direction
+    *   Integration patterns across pillars
+    *   Philosophical and scientific grounding
+
+*   **[EHDC Repository](https://github.com/dj-ccs/EHDC) = "The Implementation Lab"**
+    *   Working code for Brother Nature platform
+    *   3-token ecosystem economy (EXPLORER, REGEN, GUARDIAN)
+    *   Multi-chain architecture implementation (XPR, Metal Blockchain, XRPL, Metal L2)
+    *   Pilot programs (Deniliquin, Longford, etc.)
+    *   Rapid iteration and real-world validation
+
+**Why Parallel Development?**
+*   **Faster innovation:** EHDC can move quickly without updating extensive UCF documentation
+*   **Risk management:** Experimental features tested in EHDC before becoming UCF standards
+*   **Clear purpose:** Developers go to EHDC, strategists/theorists go to UCF
+*   **Validation pathway:** Successful EHDC patterns are promoted to UCF architectural standards
+
+**Learn More:**
+*   📋 [Repository Relationships Document](docs/repository-relationships.md) - Formal governance and integration pathways
+*   🔗 [Metallicus Interoperability Thesis](docs/metallicus-interoperability-thesis.md) - Multi-chain architecture strategy
+*   🚀 [EHDC Repository](https://github.com/dj-ccs/EHDC) - Active implementation and code
+
 ---
 
 ## 🚀 Getting Started with the UCF Civilization OS:
