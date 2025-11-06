@@ -88,30 +88,67 @@ The **Unified Conscious Evolution Framework** (this repository) provides the com
 
 ## 🚀 Getting Started with the UCF Civilization OS:
 
-1.  **Immerse Yourself:** Read the full framework: [`docs/unified-conscious-evolution-framework.md`](docs/unified-conscious-evolution-framework.md) (This is the master document for the complete OS).
-2.  **Explore the Engine Room:** Understand the Decentralized Autonomous Infrastructure (DAI): [`dai-infrastructure/README.md`](dai-infrastructure/README.md).
-3.  **Discover the Economy:** Learn about the complete twelve-token EHDC system: [`ehdc-tokenomics/complete-token-ecosystem.md`](ehdc-tokenomics/complete-token-ecosystem.md).
-4.  **See Truth in Action:** How Open Science DLT underpins the **Knowledge Commons wiki**: [`open-science-integration/README.md`](open-science-integration/README.md).
-5.  **Engage with Culture & Education:** Explore the frameworks for creative and intellectual flourishing: [`cultural-creative-framework/README.md`](cultural-creative-framework/README.md).
-6.  **Join an EPIC or the Forums:** Find your community and conversation: [`community/epics/README.md`](community/epics/README.md) and [`community/brother-nature-forums/README.md`](community/brother-nature-forums/README.md).
-7.  **Contribute to Our Shared Wisdom:** Learn about the **Knowledge Commons wiki**: [`knowledge-commons/README.md`](knowledge-commons/README.md).
-8.  **Take Action:** How to get involved: [`action/call-to-action.md`](action/call-to-action.md).
-9.  **Become a Co-Creator:** See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+### **For First-Time Visitors & Partners**
+
+1.  **Quick Overview:** Start with the [**Executive Summary**](vision/executive-summary.md) (2-3 pages)
+2.  **Strategic Context:** Review the [**Strategic Overview**](vision/strategic-overview.md) (5-7 pages)
+3.  **Partnership Opportunities:** See [**Vision Folder**](vision/) for investor-focused materials
+
+### **For Deep Divers & Researchers**
+
+4.  **Complete Framework:** Read the full vision: [`docs/conscious-evolution-framework.md`](docs/conscious-evolution-framework.md) (195KB master document)
+5.  **Multi-Chain Architecture:** Understand our interoperability strategy: [`docs/metallicus-interoperability-thesis.md`](docs/metallicus-interoperability-thesis.md)
+6.  **Parallel Development:** How we coordinate vision + implementation: [`docs/repository-relationships.md`](docs/repository-relationships.md)
+7.  **Technical Standards:** Browse promoted patterns: [`docs/architectural-decision-records/`](docs/architectural-decision-records/)
+
+### **For Implementers & Developers**
+
+8.  **Active Implementation:** Visit the [**EHDC Repository**](https://github.com/dj-ccs/EHDC) (Pillar IV - Ecosystem Partnership)
+9.  **Future Implementations:** Explore pillar visions: [Science](pillar-1-science/), [Culture](pillar-2-culture/), [Education](pillar-3-education/)
+10. **Contribute:** See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines
+
+### **For Community Members**
+
+11. **Take Action:** Practical next steps: [`action/call-to-action.md`](action/call-to-action.md)
+12. **Community Engagement:** Join forums and events: [`community/`](community/)
+13. **Traditional Knowledge:** Integration protocols: [`community/traditional-knowledge/`](community/traditional-knowledge/)
 
 ---
 
-## 🗂️ Repository Structure Highlights (UCF Focused):
+## 🗂️ Repository Structure Highlights:
 
-*   `docs/` – Core UCF conceptual documents, master framework, glossary.
-*   `dai-infrastructure/` – The Decentralized Autonomous Infrastructure: dAPI specs, core modules (scientific, cultural, economic, governance, **knowledge/wiki management**).
-*   `knowledge-commons/` – **NEW/CENTRAL**: Architecture, governance, contribution guidelines, and DAI modules (`wiki-verification.dapi.ts`, `WikiUpdate.js`) for the **Knowledge Commons wiki**.
-*   `open-science-integration/` – Integration of `open-science-dlt` as core DAI modules verifying content for the **Knowledge Commons wiki**.
-*   `cultural-creative-framework/` – Trivium-Quadrivium, "Seeds of Change" model, DAI for cultural/educational contributions to the wiki.
-*   `ehdc-tokenomics/` – Complete 12-token mechanics, valuing contributions to ecosystems, science, culture, education, and the **Knowledge Commons wiki**.
-*   `community/` – Structure for **EPICs**, **Brother Nature forums**, traditional knowledge integration protocols (all feeding into the wiki).
-*   *(Other directories like `research/`, `technology/`, `implementation/`, `consciousness/`, `media/`, `entry-points/`, `neo-kardashev/`, `action/`, `resources/`, `examples/`, `tests/`, `tools/` are adapted to serve this unified vision, often by providing content for or being orchestrated via the DAI and wiki).*
+### **Core Documentation**
+*   `docs/` – Constitutional framework, architectural decisions, governance
+    *   `conscious-evolution-framework.md` – Master document (195KB complete vision)
+    *   `metallicus-interoperability-thesis.md` – Multi-chain architecture strategy
+    *   `repository-relationships.md` – UCF ↔ EHDC governance
+    *   `architectural-decision-records/` – **NEW**: Validated patterns from implementations
 
-> See the full, updated directory in [`docs/repository-structure.md`](docs/repository-structure.md).
+### **Vision & External Materials**
+*   `vision/` – **NEW**: Executive-level materials for partners, investors, stakeholders
+    *   `executive-summary.md` – Quick overview (2-3 pages)
+    *   `strategic-overview.md` – Detailed strategy (5-7 pages)
+    *   Future: Investment thesis, technical overview, partnership opportunities
+
+### **Four Pillar Vision Directories**
+*   `pillar-1-science/` – **NEW**: Verifiable science vision (implementation Q3 2026)
+*   `pillar-2-culture/` – **NEW**: Cultural renaissance vision (implementation Q2 2026)
+*   `pillar-3-education/` – **NEW**: Educational revolution vision (implementation Q4 2026)
+*   `ehdc/` – Ecosystem partnership reference (active implementation in [separate repository](https://github.com/dj-ccs/EHDC))
+
+### **Community & Action**
+*   `community/` – EPICs, forums, traditional knowledge integration
+*   `action/` – Call to action, query templates, practical next steps
+*   `research/` – Scientific papers (climate, biodiversity)
+*   `technology/` – CTM (Continuous Thought Machine) architecture
+
+### **Supporting Materials**
+*   `templates/` – Contribution templates
+*   `assets/` – Images, diagrams
+*   `media/` – Seeds of Change content
+*   `resources/` – Tools and toolkits
+
+**Note:** Many directories referenced in the master document (like `dai-infrastructure/`, `knowledge-commons/`, `ehdc-tokenomics/`) are aspirational and will be built incrementally as patterns are validated through pillar implementations.
 
 ---
 
@@ -125,12 +162,26 @@ The **Unified Conscious Evolution Framework** (this repository) provides the com
 
 ## 🌟 Next Steps: Co-Creating a Regenerative Civilization
 
-*   Dive into the UCF: [`docs/unified-conscious-evolution-framework.md`](docs/unified-conscious-evolution-framework.md).
-*   Contribute to the **Knowledge Commons wiki**: see [`knowledge-commons/CONTRIBUTING.md`](knowledge-commons/CONTRIBUTING.md).
-*   Propose or develop a DAI module that interacts with the wiki or an EPIC: see [`dai-infrastructure/CONTRIBUTING.md`](dai-infrastructure/CONTRIBUTING.md).
-*   Join an **EPIC (Ecosystem Partnership for Intelligent Communities)** or start one.
-*   Engage in dialogue on the **Brother Nature forums**.
-*   Initiate a pilot project documenting its journey on the wiki.
+### **Strategic Partners & Investors**
+*   Review [Vision folder](vision/) for executive materials
+*   Explore partnership opportunities across pillars
+*   Contact us to discuss collaboration [TBD]
+
+### **Developers & Technologists**
+*   Contribute to [EHDC Repository](https://github.com/dj-ccs/EHDC) (active implementation)
+*   Review [ADR system](docs/architectural-decision-records/) for promoting patterns
+*   Propose improvements to multi-chain architecture
+
+### **Researchers & Academics**
+*   Deep dive: [Complete framework](docs/conscious-evolution-framework.md)
+*   Review scientific foundations in [research/](research/)
+*   Provide feedback on pillar designs
+
+### **Community Members**
+*   Take action: [Call to action guide](action/call-to-action.md)
+*   Form or join an EPIC (Ecosystem Partnership for Intelligent Communities)
+*   Engage in Brother Nature Forums
+*   Contribute to Knowledge Commons (as implementations launch)
 
 ---
 
