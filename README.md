@@ -2,6 +2,22 @@
 
 **Welcome to the Unified Conscious Evolution Framework** - providing the practical architecture to co-create a future rooted in trust, care, ecological wisdom, and the full expression of human potential. It's a living library, an action toolkit, and a collaborative frontier for building a world that thrives by enhancing life, preparing humanity for conscious cosmic stewardship.
 
+---
+
+## Welcome to the Unified Conscious Evolution Framework
+
+This repository is the **North Star** for a civilization-scale operating system designed to shift humanity toward a regenerative future. It contains the high-level vision, architectural patterns, and philosophical foundations for all projects in our ecosystem.
+
+**The UCF coordinates a Federation of Implementation Laboratories:**
+
+*   **Pillar I: Science** 🧪 **[open-science-dlt](https://github.com/dj-ccs/open-science-dlt)**: A decentralized platform for transparent, immutable scientific publishing. (Built on Stellar).
+*   **Pillar IV: Ecosystem** 🌳 **[EHDC](https://github.com/dj-ccs/EHDC)**: The engine for a regenerative economy, including the Brother Nature platform and the EHDC token system. (Built on XRPL & Metallicus).
+*   **Pillar II: Culture & Pillar III: Education**: Future labs to be developed.
+
+**To dive deep into the vision, continue reading below. To contribute to active development, please visit the lab repositories.**
+
+---
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dj-ccs/Unified-Conscious-Evolution-Framework)
 
 ---
