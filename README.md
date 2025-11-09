@@ -118,12 +118,19 @@ The **Unified Conscious Evolution Framework** (this repository) serves as the co
 *   3-token ecosystem economy (EXPLORER, REGEN, GUARDIAN)
 *   Brother Nature platform (forums, identity, payments)
 *   **Multi-chain architecture:** XPR (identity), Metal Blockchain (logic), XRPL (settlement), Metal L2 (DeFi)
+*   ✅ **XRPL Wallet Authentication** - Two-step cryptographic challenge/verify pattern (ADR-0601 validated)
 *   Proof-of-Regeneration smart contracts
 *   81/19 economic model
 
 **Why Multi-Chain:** Regenerative economics requires identity, logic, settlement, and liquidity—no single chain optimal for all.
 
-**Status:** ✅ Active - Platform scaffolding, pilot programs planned (Deniliquin, Longford)
+**Recent Milestones:**
+*   ✅ **PostgreSQL Migration** (PR #12, Nov 8-9, 2025) - Migrated from SQLite to Supabase for persistent state
+*   ✅ **Wallet Verification** (PR #17, Nov 9, 2025) - Implemented `ripple-keypairs` signature verification
+*   ✅ **ADR Promotion** - XRPL WebAuth pattern (ADR-0601) and database mandate (ADR-0401) promoted to UCF standards
+*   ✅ **Comprehensive Documentation** - MIGRATION_GUIDE.md, XRPL-WALLET-VERIFICATION.md, 600+ line dev setup
+
+**Status:** ✅ Active - Core infrastructure validated, wallet authentication functional, pilot programs planned (Deniliquin, Longford)
 
 ---
 
@@ -191,19 +198,20 @@ The Federation's two active labs exemplify the **"best tool for the job"** appro
 4.  **Complete Framework:** Read the full vision: [`docs/conscious-evolution-framework.md`](docs/conscious-evolution-framework.md) (195KB master document)
 5.  **Multi-Chain Architecture:** Understand our interoperability strategy: [`docs/metallicus-interoperability-thesis.md`](docs/metallicus-interoperability-thesis.md)
 6.  **Parallel Development:** How we coordinate vision + implementation: [`docs/repository-relationships.md`](docs/repository-relationships.md)
-7.  **Technical Standards:** Browse promoted patterns: [`docs/architectural-decision-records/`](docs/architectural-decision-records/)
+7.  **Architecture Decisions:** Browse promoted patterns: [`docs/adr/`](docs/adr/) (ADR-0601: XRPL WebAuth, ADR-0401: Database Standards)
+8.  **Technical Standards:** Implementation guides: [`docs/standards/`](docs/standards/) (XRPL integration patterns)
 
 ### **For Implementers & Developers**
 
-8.  **Active Implementation:** Visit the [**EHDC Repository**](https://github.com/dj-ccs/EHDC) (Pillar IV - Ecosystem Partnership)
-9.  **Future Implementations:** Explore pillar visions: [Science](pillar-1-science/), [Culture](pillar-2-culture/), [Education](pillar-3-education/)
-10. **Contribute:** See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines
+9.  **Active Implementation:** Visit the [**EHDC Repository**](https://github.com/dj-ccs/EHDC) (Pillar IV - Ecosystem Partnership)
+10.  **Future Implementations:** Explore pillar visions: [Science](pillar-1-science/), [Culture](pillar-2-culture/), [Education](pillar-3-education/)
+11. **Contribute:** See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines
 
 ### **For Community Members**
 
-11. **Take Action:** Practical next steps: [`action/call-to-action.md`](action/call-to-action.md)
-12. **Community Engagement:** Join forums and events: [`community/`](community/)
-13. **Traditional Knowledge:** Integration protocols: [`community/traditional-knowledge/`](community/traditional-knowledge/)
+12. **Take Action:** Practical next steps: [`action/call-to-action.md`](action/call-to-action.md)
+13. **Community Engagement:** Join forums and events: [`community/`](community/)
+14. **Traditional Knowledge:** Integration protocols: [`community/traditional-knowledge/`](community/traditional-knowledge/)
 
 ---
 
@@ -214,7 +222,8 @@ The Federation's two active labs exemplify the **"best tool for the job"** appro
     *   `conscious-evolution-framework.md` – Master document (195KB complete vision)
     *   `metallicus-interoperability-thesis.md` – Multi-chain architecture strategy
     *   `repository-relationships.md` – UCF ↔ EHDC governance
-    *   `architectural-decision-records/` – **NEW**: Validated patterns from implementations
+    *   `adr/` – Architecture Decision Records (validated patterns from implementations)
+    *   `standards/` – **NEW**: Technical implementation standards (XRPL integration, etc.)
 
 ### **Vision & External Materials**
 *   `vision/` – **NEW**: Executive-level materials for partners, investors, stakeholders

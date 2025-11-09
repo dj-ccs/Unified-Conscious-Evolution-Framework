@@ -94,9 +94,13 @@ We adopt the **Two-Step Cryptographic Challenge/Verify Pattern** as the universa
    - Challenge has not expired (`expiresAt > now`)
    - Challenge has not been used previously (`used === false`)
    - Wallet address matches the challenge record
-3. Use the XRPL cryptographic library to verify the signature:
+3. Use the `ripple-keypairs` library to verify the signature:
    ```javascript
-   const isValid = verify(message, signature, publicKey)
+   import * as keypairs from 'ripple-keypairs';
+
+   // CRITICAL: Message must be converted to hexadecimal format
+   const messageHex = Buffer.from(message, 'utf8').toString('hex');
+   const isValid = keypairs.verify(messageHex, signature, publicKey);
    ```
 4. Verify that the provided `publicKey` derives to the claimed `walletAddress`
 5. If all validations pass:
@@ -104,6 +108,57 @@ We adopt the **Two-Step Cryptographic Challenge/Verify Pattern** as the universa
    - Create or update the user account linked to this wallet
    - Issue a session token (JWT or equivalent)
    - Return success response
+
+## Critical Implementation Discovery: The ripple-keypairs Fix
+
+During the EHDC debugging marathon (November 2025), a critical technical issue was discovered and resolved that is **essential for all UCF implementations**:
+
+### The Problem
+The `xrpl` npm package (version 3.1.0) **does not export a `verify()` function** despite TypeScript autocomplete suggestions indicating otherwise. Initial implementation attempts using `xrpl.verify()` resulted in runtime errors.
+
+### The Solution
+The correct approach is to use the separate `ripple-keypairs` library, which provides the canonical XRPL signature verification:
+
+```typescript
+import * as keypairs from 'ripple-keypairs';
+
+/**
+ * Verifies an XRPL wallet signature
+ * @param message - The original challenge message
+ * @param signature - Hex-encoded signature from wallet
+ * @param publicKey - Hex-encoded public key
+ * @returns boolean indicating signature validity
+ */
+function verifyWalletSignature(
+  message: string,
+  signature: string,
+  publicKey: string
+): boolean {
+  // CRITICAL: ripple-keypairs requires hex-encoded messages
+  const messageHex = Buffer.from(message, 'utf8').toString('hex');
+  return keypairs.verify(messageHex, signature, publicKey);
+}
+```
+
+### Key Technical Requirements
+1. **Library**: Use `ripple-keypairs` (not `xrpl` package) for signature verification
+2. **Message Encoding**: Convert UTF-8 message to hexadecimal before verification
+3. **Return Type**: `verify()` returns `boolean` (not throwing on failure)
+
+### Dependencies
+```json
+{
+  "dependencies": {
+    "ripple-keypairs": "^1.3.1",
+    "xrpl": "^3.1.0"
+  }
+}
+```
+
+Note: `xrpl` is still required for other operations (wallet generation, transactions, address derivation), but signature verification must use `ripple-keypairs`.
+
+### Validation
+This implementation was validated in EHDC PR #17 (November 9, 2025) with comprehensive end-to-end testing on XRPL testnet.
 
 ## Reasoning
 
@@ -134,7 +189,8 @@ The time-expiring, one-time-use nonce prevents replay attacks and ensures freshn
 
 ## Neutral Consequences
 
-* **Library Dependency**: All Implementation Labs must include `xrpl.js` or equivalent cryptographic library.
+* **Library Dependencies**: All Implementation Labs must include both `xrpl` and `ripple-keypairs` libraries (see Critical Implementation Discovery section for details).
+* **Message Encoding**: Requires hex encoding of UTF-8 messages before signature verification.
 * **Challenge Cleanup**: Expired challenges should be periodically purged from the database.
 
 # 4. Alternatives Considered
@@ -164,8 +220,8 @@ The time-expiring, one-time-use nonce prevents replay attacks and ensures freshn
 | Attribute | Value |
 | :--- | :--- |
 | **Originating Lab:** | **EHDC** (Pillar IV - Ecosystem Health Data Commons) |
-| **Lab Feature/PR:** | EHDC debugging marathon - Signature wallet verification implementation |
-| **Validation Evidence:** | Successfully implemented and tested two-step challenge/verify flow with cryptographic signature validation using `xrpl.js` library. Pattern validated through end-to-end security testing. |
+| **Lab Feature/PR:** | EHDC PR #17 - Signature wallet verification implementation (November 9, 2025) |
+| **Validation Evidence:** | Successfully implemented and tested two-step challenge/verify flow with cryptographic signature validation using `ripple-keypairs` library. Pattern validated through end-to-end security testing on XRPL testnet. Critical discovery: `xrpl` package does not export `verify()` function; `ripple-keypairs` is required with hex message encoding. |
 | **Promotion Rationale:** | This pattern is the **foundational security primitive** for all UCF identity integration. It satisfies the constitutional requirement for secure, self-custodial identity before enabling token rewards, governance participation, or cross-lab credential portability. All future Implementation Labs (Culture Lab, Education Lab) and cross-pillar integrations must use this standardized pattern to ensure unified identity infrastructure across the Federation. |
 | **Related ADRs:** | ADR-0401 (Ephemeral Database Prohibition) - Infrastructure requirement for secure challenge storage |
 | **Cross-Lab Applicability:** | Universal - applies to all four pillars (Science, Culture, Education, Ecosystem) |
@@ -175,12 +231,18 @@ The time-expiring, one-time-use nonce prevents replay attacks and ensures freshn
 
 Labs implementing this pattern should:
 
-1. **Add Dependencies**: Install `xrpl.js` or equivalent cryptographic library for your language/framework
+1. **Add Dependencies**: Install both `xrpl` and `ripple-keypairs` libraries:
+   ```bash
+   npm install xrpl ripple-keypairs
+   # or
+   yarn add xrpl ripple-keypairs
+   ```
 2. **Database Schema**: Create `WalletChallenge` table/collection with fields: `walletAddress`, `nonce`, `message`, `expiresAt`, `used`, `createdAt`
 3. **Implement Endpoints**: Create both `/api/auth/wallet/challenge` and `/api/auth/wallet/verify` endpoints
-4. **Frontend Integration**: Implement wallet connection UI (XUMM, Crossmark, Gem Wallet, or custom signing interface)
-5. **Session Management**: Link verified wallets to user accounts and issue session tokens
-6. **Testing**: Verify end-to-end flow on XRPL testnet before mainnet deployment
+4. **Implement Signature Verification**: Use `ripple-keypairs.verify()` with hex-encoded messages (see Critical Implementation Discovery section)
+5. **Frontend Integration**: Implement wallet connection UI (XUMM, Crossmark, Gem Wallet, or custom signing interface)
+6. **Session Management**: Link verified wallets to user accounts and issue session tokens
+7. **Testing**: Verify end-to-end flow on XRPL testnet before mainnet deployment
 
 ## Security Considerations
 
@@ -194,7 +256,12 @@ Labs implementing this pattern should:
 
 ## Reference Implementation
 
-See the EHDC repository for reference implementation:
-- Challenge generation: `src/app/api/auth/wallet/challenge/route.ts`
-- Signature verification: `src/app/api/auth/wallet/verify/route.ts`
-- Database schema: `prisma/schema.prisma` (WalletChallenge model)
+See the EHDC repository (https://github.com/dj-ccs/EHDC) for reference implementation:
+- **Complete documentation**: `docs/XRPL-WALLET-VERIFICATION.md`
+- **Challenge generation**: `src/app/api/auth/wallet/challenge/route.ts`
+- **Signature verification**: `src/app/api/auth/wallet/verify/route.ts`
+- **Verification function**: `src/services/XRPLService.ts` (`verifyWalletSignature` method)
+- **Database schema**: `prisma/schema.prisma` (WalletChallenge model)
+- **Testing utility**: `scripts/xrpl_helper.js` (development-only challenge signing tool)
+
+The EHDC implementation includes comprehensive JSDoc documentation, error handling, and end-to-end testing examples.
