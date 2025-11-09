@@ -98,6 +98,69 @@ The EHDC failure demonstrates that **ephemeral databases create a false sense of
 
 The additional cost and complexity of persistent databases is **trivial compared to the cost of production authentication failures**, user lockouts, or security breaches.
 
+## EHDC Lab PostgreSQL Migration: Validation of the Solution
+
+Following the SQLite failure, the EHDC Lab executed a complete migration to PostgreSQL (Supabase) that definitively validated this architectural mandate.
+
+### Migration Details (EHDC PR #12, November 8-9, 2025)
+
+**From**: SQLite file-based database with ephemeral storage
+**To**: PostgreSQL 15+ on Supabase (managed service)
+
+### Critical Configuration Discovery
+
+The migration revealed important implementation details for Prisma ORM + PostgreSQL:
+
+**Dual-Database URL Pattern** (Required for Supabase/Prisma):
+```prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")      // Pooled connection (port 6543)
+  directUrl = env("DIRECT_URL")        // Direct connection (port 5432)
+}
+```
+
+**Port Configuration**:
+- **DATABASE_URL**: Pooled connection (`*.pooler.supabase.com:6543`) - Used for application runtime
+- **DIRECT_URL**: Direct connection (`*.supabase.com:5432`) - Required for migrations
+
+**Critical**: Using only the pooled connection causes Prisma migrations to hang indefinitely. The `directUrl` configuration is **mandatory** for migration execution.
+
+### Data Model Improvements
+
+The PostgreSQL migration enabled native array support, eliminating JSON serialization workarounds:
+
+**Before (SQLite)**:
+```typescript
+keyPoints: JSON.stringify(data.keyPoints)  // Manual serialization required
+```
+
+**After (PostgreSQL)**:
+```prisma
+keyPoints String[]  // Native array support
+```
+
+```typescript
+keyPoints: data.keyPoints  // Direct array assignment
+```
+
+### Validation Results
+
+After migration to PostgreSQL:
+1. ✅ **Challenge persistence**: WalletChallenge records survive server restarts
+2. ✅ **End-to-end flow**: Complete challenge/verify cycle works across code changes
+3. ✅ **Development parity**: Development environment matches production infrastructure
+4. ✅ **Security validation**: No "Challenge not found" errors on verification
+
+The wallet authentication flow (ADR-0601) was successfully validated end-to-end on persistent infrastructure.
+
+### Documentation
+
+The EHDC Lab created comprehensive migration documentation:
+- `MIGRATION_GUIDE.md`: Supabase configuration, port selection, common issues
+- `README-dev.md`: Complete development environment setup (600+ lines)
+- `docs/XRPL-WALLET-VERIFICATION.md`: End-to-end integration testing guide
+
 # 3. Consequences
 
 ## Positive Consequences
@@ -150,9 +213,10 @@ The additional cost and complexity of persistent databases is **trivial compared
 | Attribute | Value |
 | :--- | :--- |
 | **Originating Lab:** | **EHDC** (Pillar IV - Ecosystem Health Data Commons) |
-| **Originating Event:** | **EHDC Security Validation Failure** - Final act of the debugging marathon |
+| **Originating Event:** | **EHDC Security Validation Failure** - Final act of the debugging marathon (November 8, 2025) |
 | **Failure Context:** | The two-step cryptographic wallet authentication flow (ADR-0601) requires persistent storage of challenge records. When tested in a Codespace with SQLite, server restarts caused by code changes wiped the database, resulting in `{"error":"Not Found","message":"Challenge not found"}` on the verify endpoint. |
-| **Validation Evidence:** | **Negative validation**: The failure definitively proved that ephemeral databases cannot support stateful security primitives. Migration to persistent PostgreSQL (Supabase) resolved the issue immediately. |
+| **Validation Evidence:** | **Negative validation** (failure) + **Positive validation** (migration success): (1) The failure definitively proved that ephemeral databases cannot support stateful security primitives. (2) Migration to persistent PostgreSQL/Supabase (PR #12, November 8-9, 2025) resolved the issue immediately, with WalletChallenge records surviving server restarts and complete end-to-end wallet authentication flow validated on persistent infrastructure. |
+| **Migration PRs:** | EHDC PR #12 (PostgreSQL migration), PR #17 (wallet verification validation) |
 | **Promotion Rationale:** | This is a **constitutional infrastructure mandate** for the UCF Federation. All Implementation Labs implementing security-critical features (wallet authentication, session management, authorization flows) must use persistent databases. This prevents future labs from repeating the EHDC failure pattern and ensures infrastructure consistency across the Federation. |
 | **Related ADRs:** | ADR-0601 (XRPL WebAuth Integration) - The security feature that exposed this infrastructure requirement |
 | **Cross-Lab Applicability:** | Universal - applies to all four pillars whenever security-critical features are implemented |
@@ -165,10 +229,14 @@ Labs currently using ephemeral databases for security features must:
 1. **Audit Current Infrastructure**: Identify all uses of SQLite, in-memory databases, or ephemeral storage for security-critical data
 2. **Select Persistent Database**: Choose managed PostgreSQL/MySQL provider (recommendations: Supabase, Neon, PlanetScale)
 3. **Update Development Environment**:
-   - Add Docker Compose configuration for local PostgreSQL
+   - Add Docker Compose configuration for local PostgreSQL OR use managed service (Supabase/Neon)
    - Update connection strings in environment variables
+   - **For Prisma + Supabase**: Configure dual-database URLs (see EHDC migration section above)
    - Test database connectivity
-4. **Migrate Schema**: Export existing schema, import to persistent database
+4. **Migrate Schema**:
+   - Update Prisma schema with `provider = "postgresql"` and `directUrl` configuration
+   - Export existing schema, import to persistent database
+   - Run `prisma migrate dev` (requires `DIRECT_URL` for Supabase)
 5. **Update CI/CD**: Configure persistent database service containers for integration tests
 6. **Deploy to Production**: Update production environment with persistent database connection
 7. **Validate End-to-End**: Test security features (especially multi-step flows) through server restart cycles
