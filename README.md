@@ -65,6 +65,15 @@ The UCF is a holistic operating system, built upon interconnected pillars and gr
 *   **🔗 Multi-Chain Interoperability Architecture**
     Rather than competing with established blockchain platforms, UCF leverages **Metallicus** as the interoperability layer, providing identity (XPR Network), compliance, and programmability that orchestrates multiple specialized chains. See [`docs/metallicus-interoperability-thesis.md`](docs/metallicus-interoperability-thesis.md) for the complete strategic analysis.
 
+*   **🌀 Mathematical Foundations: Double-and-Scale Regenerative Principle**
+    Building on breakthrough research (Eckmann & Tlusty 2025), UCF embodies the principle that **regeneration requires two properly scaled interventions**, not one. This SE(3) double-and-scale mathematical framework enables:
+    - Agricultural rotation optimization (hemp→wheat cycles with scaled inputs)
+    - Carbon sequestration protocols (biochar application timing)
+    - Digital twin verification (sensor calibration via double-measurement)
+    - Narrative structure design (story arcs with transformed resolution)
+
+    See [`foundations/lie_groups/`](foundations/lie_groups/) and [ADR-0001](docs/adr/0001-double-and-scale-regenerative-principle.md) for the complete mathematical foundation and cross-pillar applications.
+
 ---
 
 ## 🔄 The Federation of Implementation Labs
