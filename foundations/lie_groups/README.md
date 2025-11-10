@@ -12,6 +12,8 @@ This module implements the profound mathematical principle that **regeneration r
 
 While a single traversal of a rotation sequence almost never returns to identity (zero-dimensional point with codimension 3), **doubling the sequence while scaling creates a universal return mechanism**. The set of double-identity roots forms a 2D manifold with codimension 1, dramatically increasing return probability.
 
+> **Research Status**: This mathematical principle is **proven for SO(3)** (Eckmann & Tlusty 2025). Extension to SE(3) and application to regenerative systems is a **working hypothesis requiring empirical validation**.
+
 ### The Haar Measure Revelation
 
 Random rotations in SO(3) have a peculiar distribution:
@@ -27,6 +29,8 @@ P²(ω) = 1/(2π)  for ω ∈ [0,π]
 ```
 
 This transformation from biased to uniform distribution is the geometric "magic" enabling the reset mechanism.
+
+> **Important**: While the Haar measure transformation is mathematically rigorous for SO(3), its practical implications for agricultural/ecological systems require field validation.
 
 ---
 
@@ -336,7 +340,7 @@ pytest tests/test_se3_double_scale.py -v
 
 ### Key Test Results
 
-**Random Trajectory Returns** (5 trials):
+**Random Trajectory Returns** (5 trials, preliminary):
 ```
 Trial 0: Error 0.234, λ = 0.847
 Trial 1: Error 0.189, λ = 0.623  ← Near golden ratio!
@@ -345,7 +349,14 @@ Trial 3: Error 0.276, λ = 0.591
 Trial 4: Error 0.198, λ = 0.719
 ```
 
-**Golden Ratio Frequency**: λ ≈ 0.618 (±30%) appears in ~40% of random trajectories.
+**Observed Pattern**: λ ≈ 0.618 (±30%) appeared in ~40% of small random trajectories.
+
+> **Research Note**: This observation is **preliminary** (N=5 trials, small trajectories, specific random seed). Before treating as universal principle, requires:
+> - Larger sample sizes (N≥1000)
+> - Different random distributions (uniform, Gaussian, heavy-tailed)
+> - Control comparisons on other Lie groups (SO(2), SE(2))
+> - Noise perturbation stability tests
+> - Real-world validation with agricultural/ecological data
 
 ---
 
@@ -436,19 +447,53 @@ result = optimize_scaling_factor(trajectory, double=True)
 
 ## 🔮 Open Research Questions
 
-1. **Optimal λ Computation**: Can we predict λ from system parameters without optimization?
+See [`VALIDATION_METHODOLOGY.md`](VALIDATION_METHODOLOGY.md) for complete empirical validation roadmap.
 
-2. **Noise Robustness**: How much stochasticity can the mechanism tolerate before breakdown?
+### Foundational Questions
 
-3. **Higher Dimensions**: Does double-and-scale extend to SO(n), n>3? (Eckmann & Tlusty leave this open)
+1. **Golden Ratio Universality**: Is φ ≈ 0.618 clustering universal or artifact?
+   - **Status**: Observed in N=5 trials; requires N≥1000 + statistical testing
+   - **Validation**: Phase 1 Monte Carlo (Q1 2026)
 
-4. **Composition Rules**: For chained interventions, do double-and-scale returns compose predictably?
+2. **SE(3) Extension Validity**: Does double-and-scale apply to full rigid body transformations?
+   - **Status**: Mathematically proven for SO(3), conjectured for SE(3)
+   - **Validation**: Agricultural field trials (Q2-Q4 2026)
 
-5. **Economic Cycles**: Can financial/economic systems be modeled as compact group walks with approximate returns?
+3. **Cross-Domain Applicability**: Do narrative/economic systems follow same mathematics?
+   - **Status**: Metaphorical mappings proposed, empirically untested
+   - **Validation**: Narrative correlation study (Q3-Q4 2026)
 
-6. **Narrative Cognition**: Can we formalize story structures as Lie group walks with measurable return quality?
+### Computational Questions
 
-7. **Multi-Scale Coupling**: How do returns at one scale (field) propagate to another (watershed, regional)?
+4. **Optimal λ Prediction**: Can we predict λ from trajectory features without optimization?
+   - **Approach**: Machine learning on validated datasets
+   - **Depends on**: Phase 1-3 validation completion
+
+5. **Noise Robustness**: How much stochasticity tolerable before breakdown?
+   - **Status**: Preliminary noise tests in `test_resonance_aware.py`
+   - **Validation**: Perturbation stability tests (Phase 1)
+
+### Scaling Questions
+
+6. **Composition Rules**: Do chained double-and-scale returns compose predictably?
+   - **Foundation**: Campbell-Baker-Hausdorff implemented
+   - **Validation**: Seasonal planning experiments (Phase 2)
+
+7. **Multi-Scale Coupling**: How do field-level returns propagate to watershed?
+   - **Priority**: HIGHEST (Opus ranking)
+   - **Approach**: Renormalization group methods
+   - **Validation**: Multi-site agricultural study (Phase 2)
+
+### Extension Questions
+
+8. **Higher Dimensions**: Does double-and-scale extend to SO(n), n>3?
+   - **Status**: Eckmann & Tlusty explicitly leave open
+   - **Priority**: LOWER until SO(3) limits encountered
+   - **Approach**: Theoretical analysis + numerical experiments
+
+9. **Economic Cycles**: Can markets be modeled as compact group walks?
+   - **Status**: Proposed as hypothesis
+   - **Validation**: Requires token economics deployment + time-series data
 
 ---
 
@@ -456,17 +501,24 @@ result = optimize_scaling_factor(trajectory, double=True)
 
 ```
 foundations/lie_groups/
-├── README.md                    # This file
-├── se3_double_scale.py          # Core module (SE3Pose, trajectory, optimization)
-├── advanced_patterns.py         # Berry phase, hysteresis, OU processes
+├── README.md                      # This file
+├── VALIDATION_METHODOLOGY.md      # ⚠️ Empirical validation requirements
+├── OPUS_INSIGHTS.md               # Resonance-aware extensions (experimental)
+├── se3_double_scale.py            # Core module (SE3Pose, trajectory, optimization)
+├── advanced_patterns.py           # Berry phase, hysteresis, OU processes
+├── resonance_aware.py             # ⚠️ Experimental resonance detection (needs validation)
 ├── tests/
-│   └── test_se3_double_scale.py # Comprehensive test suite
+│   ├── test_se3_double_scale.py   # Core functionality tests
+│   └── test_resonance_aware.py    # Experimental extensions tests
 └── examples/
-    ├── agricultural_rotation.py # Hemp-wheat rotation example
-    ├── carbon_sequestration.py  # Biochar application timing
-    ├── digital_twin_verify.py   # Sensor network calibration
-    └── narrative_arc.py          # Story structure modeling
+    ├── INTEGRATION_GUIDE.md       # Lab integration examples
+    ├── agricultural_rotation.py   # Hemp-wheat rotation example (planned)
+    ├── carbon_sequestration.py    # Biochar application timing (planned)
+    ├── digital_twin_verify.py     # Sensor network calibration (planned)
+    └── narrative_arc.py            # Story structure modeling (planned)
 ```
+
+**⚠️ Important**: `resonance_aware.py` is **experimental**. See `VALIDATION_METHODOLOGY.md` for empirical requirements before production use.
 
 ---
 

@@ -1,15 +1,36 @@
 """
 Resonance-Aware Extensions for SE(3) Double-and-Scale
 
+**RESEARCH STATUS: EXPERIMENTAL - REQUIRES VALIDATION**
+
+This module implements exploratory extensions based on preliminary observations.
+Treat as a research framework for hypothesis testing, NOT production-ready code.
+
 Implements Claude Opus insights:
 - ResonanceDetector: Test for natural mathematical constants (golden ratio, silver ratio, etc.)
 - VerificationCascade: Multi-level verification for EHDC token generation
 - NarrativeQualityMetric: Quantify story satisfaction using return principles
 - ResonanceAwareOptimizer: Optimization biased toward natural scaling factors
 
-Based on empirical discovery: λ ≈ 0.618 (golden ratio) appears in ~40% of
-random trajectory optimizations, suggesting systems naturally prefer
-mathematical constants for optimal regenerative returns.
+Based on PRELIMINARY observation: λ ≈ 0.618 (golden ratio) appeared in ~40% of
+small random trajectories (N=5 trials). This could indicate natural preference
+for mathematical constants, OR could be optimization landscape artifact.
+
+REQUIRES VALIDATION:
+- Larger sample sizes (N≥1000)
+- Multiple random distributions (uniform, Gaussian, heavy-tailed)
+- Control groups on other Lie groups (SO(2), SE(2))
+- Noise perturbation stability tests
+- Real-world agricultural/ecological field trials
+
+See VALIDATION_METHODOLOGY.md for complete empirical requirements before
+treating these tools as production-ready.
+
+Current use cases:
+✅ Hypothesis generation and exploration
+✅ Research experiments and data collection
+❌ Production token economics without validation
+❌ Claiming universal principles without empirical proof
 """
 
 import numpy as np

@@ -5,9 +5,9 @@
 
 ---
 
-## The Core Discovery: Natural System Resonance
+## The Core Discovery: Natural System Resonance Hypothesis
 
-Empirical finding from test suite:
+**Preliminary empirical observation** from test suite (N=5, controlled seed):
 ```
 Trial 0: Error 0.234, λ = 0.847
 Trial 1: Error 0.189, λ = 0.623  ← Near golden ratio!
@@ -16,7 +16,24 @@ Trial 3: Error 0.276, λ = 0.591
 Trial 4: Error 0.198, λ = 0.719
 ```
 
-**Golden ratio (±30%) appeared in ~40% of random trajectories**, suggesting systems naturally "lock" to fundamental mathematical constants for optimal regenerative returns.
+**Observed pattern**: Golden ratio (±30%) appeared in ~40% of random trajectories.
+
+### Hypothesis (Requires Validation)
+
+Systems may naturally "lock" to fundamental mathematical constants for optimal regenerative returns. However, this could also result from:
+- Optimization landscape of small random SE(3) trajectories
+- Artifact of specific random distribution used
+- Numerical coincidence requiring larger sample confirmation
+
+### Required Validation Steps
+
+Before elevating to principle:
+1. **Larger samples**: N≥1000 trials, multiple random seeds
+2. **Distribution tests**: Uniform, Gaussian, heavy-tailed noise
+3. **Control groups**: Test on SO(2), SE(2), other Lie groups
+4. **Perturbation stability**: Does φ persist under noise?
+5. **Real data**: Agricultural field trials, carbon sequestration measurements
+6. **Statistical significance**: Confidence intervals, hypothesis testing vs. null (random λ)
 
 ---
 
@@ -393,18 +410,24 @@ class TokenBondingCurve:
 
 ---
 
-## The Meta-Pattern Crystallizes
+## The Meta-Pattern: A Working Conjecture
 
-### Regeneration Theorem (Constitutional Principle)
+### Regeneration Conjecture (Research Hypothesis)
 
-> **For any bounded system undergoing transformations in a Lie group G, there exists a scaling factor λ such that the doubled, scaled trajectory [W(λ)]² approximates return to an enhanced equilibrium state.**
+> **Conjecture**: In bounded dynamical systems modeled on compact or semi-compact Lie groups, there often exists a scaling factor λ such that the doubled, scaled trajectory [W(λ)]² approaches identity more efficiently than random scaling, potentially clustering around mathematical constants (φ, 3/2, 2, etc.).
 
-This is now:
-- ✅ **Mathematically proven** (Eckmann & Tlusty 2025)
-- ✅ **Computationally implemented** (SE(3) module)
-- ✅ **Empirically validated** (golden ratio emergence)
-- ✅ **Cross-domain applicable** (agriculture → narrative → carbon)
-- ✅ **Resonance-aware** (detects natural mathematical constants)
+**Current Status**:
+- ✅ **Mathematically proven** for SO(3) (Eckmann & Tlusty 2025)
+- ✅ **Computationally implemented** for SE(3) (this module)
+- 🔄 **Preliminary observations** suggest golden ratio clustering (requires validation)
+- 🔄 **Cross-domain applicability** proposed (agriculture, narrative, carbon)
+- 📅 **Field validation** needed for all applications
+
+**This is a research framework, not established fact.** Treat as:
+- ✅ **Foundation for hypothesis testing**
+- ✅ **Tool for exploration and experimentation**
+- ❌ **Not production-ready without domain-specific validation**
+- ❌ **Not a universal law (yet)**
 
 ### The Rosetta Stone
 
