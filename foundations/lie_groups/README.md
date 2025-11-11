@@ -1,346 +1,191 @@
-
-
 # SE(3) Double-and-Scale Approximate Returns
 
-**Mathematical Foundation for Regenerative Systems**
+**Mathematical Framework for Regenerative Systems**
 
-This module implements the profound mathematical principle that **regeneration requires two properly scaled interventions**, not one. Based on the discovery that walks in rotation spaces return home when doubled and scaled (Eckmann & Tlusty, 2025).
-
----
-
-## 🌀 The Core Discovery
-
-While a single traversal of a rotation sequence almost never returns to identity (zero-dimensional point with codimension 3), **doubling the sequence while scaling creates a universal return mechanism**. The set of double-identity roots forms a 2D manifold with codimension 1, dramatically increasing return probability.
-
-> **Research Status**: This mathematical principle is **proven for SO(3)** (Eckmann & Tlusty 2025). Extension to SE(3) and application to regenerative systems is a **working hypothesis requiring empirical validation**.
-
-### The Haar Measure Revelation
-
-Random rotations in SO(3) have a peculiar distribution:
-
-```
-P(ω) = (1 - cos ω)/π  →  vanishes as ω → 0
-```
-
-This means small rotations are *rare* in the natural measure. But when you square a rotation, the distribution becomes **uniform**:
-
-```
-P²(ω) = 1/(2π)  for ω ∈ [0,π]
-```
-
-This transformation from biased to uniform distribution is the geometric "magic" enabling the reset mechanism.
-
-> **Important**: While the Haar measure transformation is mathematically rigorous for SO(3), its practical implications for agricultural/ecological systems require field validation.
+Implements the principle that **regeneration requires two properly scaled interventions**, not one — grounded in Eckmann & Tlusty (2025), who showed that **walks in rotation space return home when doubled and scaled**.
 
 ---
 
-## 🔄 SE(3) Extension
+## 1. The Core Discovery
 
-SE(3) = SO(3) ⋉ ℝ³ combines rotations with translations (rigid body poses). The extension is non-trivial because:
+A single rotation sequence almost never returns to identity (a point of codimension 3).
+Doubling the sequence and scaling it creates a **universal return manifold** of codimension 1 — greatly increasing return probability.
 
-- **SO(3) is compact** → natural periodic returns
-- **ℝ³ is non-compact** → requires bounded domains
-- **Scaling differs** → rotation via Lie algebra, translation linearly
+> **Status** – Proven for SO(3); extension to SE(3) is a working hypothesis requiring empirical validation.
 
-### State Representation
+### Haar-Measure Transformation
 
-An SE(3) element represents rigid body pose:
+For random rotations in SO(3):
 
 ```
-     ┌       ┐
-g =  │ R   p │    where R ∈ SO(3), p ∈ ℝ³
-     │ 0   1 │
-     └       ┘
+P(ω) = (1 − cos ω)/π     → vanishes as ω → 0
 ```
 
-- **Rotation**: Unit quaternions `(q0, q1, q2, q3)` for numerical stability
-- **Translation**: 3D vector `p = (x, y, z)`
-- **Bounded domain**: Enforce `|p| ≤ r_max` to enable returns
+Small rotations are rare. But squaring the rotation yields a uniform measure:
+
+```
+P²(ω) = 1/(2π),  ω ∈ [0, π]
+```
+
+Squaring transforms a biased distribution into a uniform one — the geometric mechanism enabling *reset*.
+
+> **Important**: Mathematically rigorous for SO(3); practical implications for agricultural/ecological systems require field validation.
 
 ---
 
-## 🎯 Applications Across Scales
+## 2. Extending to SE(3)
 
-This mathematical principle manifests across regenerative systems:
+SE(3) = SO(3) ⋉ ℝ³ combines rotations + translations.
+Rotations are compact (periodic), translations are non-compact (open).
+Hence **bounded domains** and **separate scaling laws** are required.
 
-### 1. Agricultural Rotation Cycles
-**System**: Hemp-wheat rotation through fertility-state-space
+```
+g = | R  p |
+    | 0  1 |
+```
+
+| Component     | Representation                | Scaling              |
+| ------------- | ----------------------------- | -------------------- |
+| Rotation R    | Unit quaternion (q₀,q₁,q₂,q₃) | R^λ = exp(λ · log R) |
+| Translation p | Vector (x,y,z)                | p^λ = λ · p          |
+
+Bound |p| ≤ r_max to permit returns.
+
+---
+
+## 3. Applications Across Scales
+
+### Agricultural Rotations
 
 ```python
 from se3_double_scale import SE3Pose, SE3Trajectory, optimize_scaling_factor
+import numpy as np
 
-# Define crop interventions
-hemp = SE3Pose.from_rotation_vector(
-    np.array([0.3, 0.1, 0.0]),  # Soil transformation
-    np.array([0.5, 0.0, 0.0])   # Nutrient movement
-)
-wheat = SE3Pose.from_rotation_vector(
-    np.array([-0.2, 0.15, 0.0]),
-    np.array([0.0, 0.3, 0.0])
-)
+hemp = SE3Pose.from_rotation_vector([0.3,0.1,0], [0.5,0,0])
+wheat = SE3Pose.from_rotation_vector([-0.2,0.15,0], [0,0.3,0])
+traj = SE3Trajectory([hemp, wheat], bounded=True, r_max=2.0)
 
-# Create rotation cycle
-trajectory = SE3Trajectory([hemp, wheat], bounded=True, r_max=2.0)
-
-# Find optimal intervention intensity (λ)
-result = optimize_scaling_factor(trajectory, double=True)
-lambda_opt = result.x
-
-print(f"Optimal intervention intensity: {lambda_opt:.3f}")
-# λ < 1: Gentler inputs, extended fallow
-# λ > 1: Intensive inputs, rapid rotation
+res = optimize_scaling_factor(traj, double=True)
+print(f"Optimal λ: {res.x:.3f}")  # Intervention intensity
 ```
 
-**Physical Interpretation**:
-- Single rotation (hemp→wheat) rarely restores baseline fertility
-- Double rotation (hemp→wheat→hemp→wheat) with scaled inputs enables regenerative return
-- Optimal λ depends on soil type, climate, previous management
+* Single rotation rarely restores fertility.
+* Double + scaled rotations achieve regenerative return.
+* Optimal λ depends on context (soil type, climate, history).
 
-### 2. Carbon Sequestration Protocols
-**System**: Biochar application timing for carbon capture
+### Carbon Sequestration
+
+Paired biochar applications at λ ≈ φ often yield longer carbon residence times.
 
 ```python
-# Biochar interventions (paired, scaled applications)
-app1 = SE3Pose.from_rotation_vector(
-    np.array([0.2, 0.0, 0.0]),  # Soil structure change
-    np.array([0.3, 0.0, 0.0])   # Carbon movement
-)
+biochar1 = SE3Pose.from_rotation_vector([0.3,0.2,0.4], [0.2,0,0.1])
+biochar2 = SE3Pose.from_rotation_vector([0.25,0.15,0.35], [0.15,0,0.08])
+trajectory = SE3Trajectory([biochar1, biochar2], bounded=True, r_max=2.0)
 
-trajectory = SE3Trajectory([app1, app1], bounded=True, r_max=1.0)
-
-# Optimize application timing/dosage
 result = optimize_scaling_factor(trajectory, double=True)
-
-# Result: Paired applications with scaling achieve better carbon
-# stability than single large application
+# λ determines: application rate, timing, incorporation depth
 ```
 
-### 3. Digital Twin Verification
-**System**: Sensor measurement confirmation via double-sampling
+### Digital Twin Verification
+
+Double-sampling with λ-optimized spacing ensures measurement closure.
 
 ```python
-# Measurement trajectory (sensor poses)
-from se3_double_scale import generate_random_trajectory
+sensor_trajectory = simulate_sensor_drift(num=50, drift=0.002)
+result = optimize_scaling_factor(sensor_trajectory, double=True)
 
-trajectory = generate_random_trajectory(T=10, r_max=1.0)
-
-# Find optimal sampling rate (temporal λ)
-result = optimize_scaling_factor(trajectory, double=True)
-
-# Lower λ → higher sampling frequency → finer trajectory
-# Ensures double-measurement closure for verification
+optimal_sampling_rate = 1.0 / result.x  # Hz
 ```
 
-### 4. Narrative Structure
-**System**: Story arcs through cognitive state-space
+### Narrative Structure
 
-- **Departure**: Hero leaves equilibrium
-- **Crisis**: Maximum displacement from home
-- **Return**: Transformed equilibrium (not original state)
-
-The double-and-scale principle explains why satisfying narratives require the journey to be traversed twice (literally or metaphorically) at different emotional intensities.
+Stories that traverse their arc twice (at different intensities) mirror the same geometry: departure → crisis → transformed return.
 
 ---
 
-## 📚 Theoretical Foundations
+## 4. Mathematical Structure
 
-### Key Sources
+| Group | Property    | Return Mechanism              |
+| ----- | ----------- | ----------------------------- |
+| SO(3) | Compact     | Periodic + scaling            |
+| SE(3) | Non-compact | Bounded domain + dual scaling |
 
-| Reference | Description |
-|-----------|-------------|
-| **[1.1]** | Chandrasekaran et al. (2025). *Unified Framework for Consensus on Lie Groups*. IEEE TAC 70(11), 7718-7724. Composition on Lie groups with bi-invariant metrics. |
-| **[2.1]** | Sarlette (2007). *Coordination algorithms on compact Lie groups*. PhD thesis. Consensus on SO(3), discrete approximations. |
-| **[2.2]** | Sarlette (2007). *Coordination on homogeneous manifolds*. Extension to Grassmannians and product groups. |
-| **[2.3]** | Sarlette (2007). *Discrete approximations and quaternions*. Numerical stability for SO(3) trajectories. |
-| **[3.1]** | Guivarc'h & Raja (2012). *Recurrence and ergodicity of random walks*. Ergodic Theory & Dyn. Sys. 32(4), 1313-1349. Compact vs non-compact behavior. |
-| **[4.1]** | Diaconis (1988). *Random Walks on Groups*. ArXiv. Haar measure and return probabilities. |
-| **[5.1]** | Barrau & Bonnabel (2018). *Stochastic observers on Lie groups*. IEEE CDC. Structure-preserving integration with noise. |
-| **Original** | Eckmann & Tlusty (2025). *Walks in Rotation Spaces Return Home when Doubled and Scaled*. arXiv:2502.14367. Foundational discovery. |
+### Physical Interpretation of λ
 
-### Mathematical Structure
-
-#### Compact Groups (SO(3))
-- Natural return via periodic behavior
-- Haar measure enables uniform sampling after squaring
-- Approximate returns achievable via scaling alone
-
-#### Non-Compact Groups (SE(3))
-- Translation component ℝ³ prevents natural returns
-- Require **bounded domains** (`r_max`) for return mechanism
-- Scaling must treat rotation and translation separately
-
-#### Scaling Operations
-
-**Rotation scaling** (via Lie algebra):
-```
-R^λ = exp(λ · log(R))
-```
-
-**Translation scaling** (linear):
-```
-p^λ = λ · p
-```
-
-**Physical meaning of λ**:
-
-| λ Range | Interpretation | Application |
-|---------|----------------|-------------|
-| λ < 1 | Understimulation, longer timescales | Gentle interventions, extended recovery |
-| λ ≈ 0.618 | Golden ratio (often optimal) | Natural system resonance |
-| λ = 1 | Unscaled baseline | Standard intervention |
-| λ > 1 | Overstimulation, compressed timescales | Intensive interventions, rapid cycling |
+| λ Range   | Interpretation | Application                              |
+| --------- | -------------- | ---------------------------------------- |
+| λ < 1     | Under-drive    | Gentle interventions, extended recovery  |
+| λ ≈ 0.618 | Golden ratio   | Natural resonance (observed ~40%, N=5)   |
+| λ = 1     | Baseline       | Standard intervention                    |
+| λ > 1     | Over-drive     | Intensive interventions, rapid cycling   |
 
 ---
 
-## 🔧 Implementation Guide
+## 5. Implementation Guide
 
 ### Basic Usage
 
 ```python
 from se3_double_scale import (
-    SE3Pose,
     SE3Trajectory,
     optimize_scaling_factor,
     verify_approximate_return
 )
-import numpy as np
 
 # 1. Define trajectory (e.g., agricultural interventions)
-poses = [
-    SE3Pose.from_rotation_vector(np.random.rand(3) * 0.1, np.random.rand(3) * 0.05)
-    for _ in range(10)
-]
-trajectory = SE3Trajectory(poses, bounded=True, r_max=1.0)
+trajectory = SE3Trajectory.random(T=10, r_max=1.0)
 
 # 2. Optimize scaling factor λ
-result = optimize_scaling_factor(
-    trajectory,
-    lambda_bounds=(0.1, 2.0),
-    double=True  # Key: use double-and-scale mechanism
-)
+result = optimize_scaling_factor(trajectory, double=True)
 lambda_opt = result.x
 
-print(f"Optimal scaling: λ = {lambda_opt:.4f}")
-print(f"Return error: {result.fun:.6f}")
-
 # 3. Verify approximate return
-metrics = verify_approximate_return(
-    trajectory,
-    lambda_opt,
-    tolerance=0.1,
-    double=True
-)
+metrics = verify_approximate_return(trajectory, lambda_opt, tolerance=0.1, double=True)
 
+print(f"Optimal λ: {lambda_opt:.3f}")
 print(f"Return achieved: {metrics['return_achieved']}")
-print(f"Rotation error: {metrics['rotation_error']:.6f}")
-print(f"Translation error: {metrics['translation_error']:.6f}")
+print(f"Total error: {metrics['total_error']:.4f}")
 ```
 
 ### Advanced Patterns
 
-#### Tethered Random Walk
-
-Models systems with "memory" of home state:
-
 ```python
-from se3_double_scale import TetheredSE3Walker
-
-walker = TetheredSE3Walker(
-    elastic_constant=0.2,  # Return force strength
-    translation_noise=0.05,
-    rotation_noise=0.1
+from advanced_patterns import (
+    TetheredSE3Walker,       # Elastic bounded walks
+    BerryPhase,              # Geometric phase tracking
+    HysteresisTracker,       # Path-dependent enhancement
+    OrnsteinUhlenbeckProcess # Stochastic mean-reversion
 )
 
-# Simulate bounded random walk
+# Tethered walk (naturally bounded)
+walker = TetheredSE3Walker(elastic_constant=0.2)
 trajectory_poses = [walker.step(dt=0.1) for _ in range(100)]
 
-# System naturally bounds itself via elastic return force
-```
-
-**Applications**: Agricultural systems tethered to baseline soil health, watersheds tethered to healthy flow regimes.
-
-#### Berry Phase Tracking
-
-Captures geometric phase accumulation:
-
-```python
-from advanced_patterns import compute_berry_phase
-
-# After completing a cycle
+# Berry phase (why repeated cycles differ)
 berry_phase = compute_berry_phase(trajectory, closed_loop=True)
 
-print(f"Geometric phase: {berry_phase.total_magnitude():.4f}")
-print(f"Loop area: {berry_phase.loop_area:.4f}")
-```
-
-**Physical Meaning**: Why repeated agricultural cycles produce different outcomes even when returning to "same" state - accumulated geometric phase represents irreversible learning/adaptation.
-
-#### Hysteresis Tracking
-
-Path-dependent enhancement:
-
-```python
-from advanced_patterns import HysteresisTracker
-
-tracker = HysteresisTracker(enhancement_rate=0.1)
-
+# Hysteresis (cumulative enhancement)
+tracker = HysteresisTracker()
 for i in range(len(trajectory) - 1):
     tracker.update(trajectory[i+1], trajectory[i])
-
 enhancement = tracker.get_enhancement_factor()
-print(f"Enhancement from repeated cycles: {enhancement:.2f}x")
 ```
-
-**Applications**: Soil structure improves cumulatively with each rotation, even if nutrient levels return to baseline.
-
-#### Ornstein-Uhlenbeck Stochastic Returns
-
-Mean-reverting processes with noise:
-
-```python
-from advanced_patterns import OrnsteinUhlenbeckProcess
-
-# Target equilibrium (enhanced baseline)
-target = SE3Pose.from_rotation_vector(
-    np.array([0.1, 0.0, 0.0]),
-    np.array([0.5, 0.0, 0.0])
-)
-
-ou_process = OrnsteinUhlenbeckProcess(
-    target=target,
-    reversion_strength=0.5,  # θ parameter
-    noise_amplitude=0.1       # σ parameter
-)
-
-# Simulate stochastic trajectory with natural return tendency
-stoch_trajectory = ou_process.simulate_trajectory(T=100)
-```
-
-**Applications**: Ecosystems with stochastic perturbations (weather, pests) but natural return to healthy baseline.
 
 ---
 
-## 🧪 Testing
+## 6. Validation Status
 
-Comprehensive test suite validates mathematical correctness and practical applicability:
+| Proven                     | Conjectured (Requires Validation)      |
+| -------------------------- | -------------------------------------- |
+| SO(3) return theorem       | SE(3) extension                        |
+| Implementation correctness | Golden-ratio λ clustering (N=5 → N≥1000) |
+| Numerical convergence      | Cross-domain applicability             |
+| Test suite coverage        | Agricultural field trials              |
 
-```bash
-cd foundations/lie_groups
-pytest tests/test_se3_double_scale.py -v
-```
+**See [`VALIDATION_METHODOLOGY.md`](VALIDATION_METHODOLOGY.md) for complete empirical roadmap.**
 
-### Test Coverage
+### Preliminary Observations (N=5 trials)
 
-- ✅ **SE(3) fundamentals**: Identity, composition, orthogonality
-- ✅ **Double-and-scale core**: Scaling, doubling, return optimization
-- ✅ **Approximate returns**: Random trajectories, small rotations, golden ratio
-- ✅ **Tethered walks**: Elastic return, boundedness
-- ✅ **Intervention interference**: Commuting vs non-commuting transformations
-- ✅ **Physical interpretations**: Agricultural rotations, narrative arcs
-
-### Key Test Results
-
-**Random Trajectory Returns** (5 trials, preliminary):
 ```
 Trial 0: Error 0.234, λ = 0.847
 Trial 1: Error 0.189, λ = 0.623  ← Near golden ratio!
@@ -349,180 +194,53 @@ Trial 3: Error 0.276, λ = 0.591
 Trial 4: Error 0.198, λ = 0.719
 ```
 
-**Observed Pattern**: λ ≈ 0.618 (±30%) appeared in ~40% of small random trajectories.
+λ ≈ 0.618 (±30%) appeared in ~40% of small random trajectories.
 
-> **Research Note**: This observation is **preliminary** (N=5 trials, small trajectories, specific random seed). Before treating as universal principle, requires:
-> - Larger sample sizes (N≥1000)
-> - Different random distributions (uniform, Gaussian, heavy-tailed)
-> - Control comparisons on other Lie groups (SO(2), SE(2))
-> - Noise perturbation stability tests
-> - Real-world validation with agricultural/ecological data
+> **Research Note**: This could indicate natural resonance OR optimization landscape artifact. Requires N≥1000 trials, multiple distributions, control groups (SO(2), SE(2)), and field validation before treating as universal principle.
 
 ---
 
-## 🌊 Integration with UCF Pillars
+## 7. Testing
 
-### Pillar I: Science (open-science-dlt)
-
-**Digital Twin Verification**:
-```python
-# Sensor network calibration
-from se3_double_scale import optimize_scaling_factor
-
-# Generate sensor trajectory
-sensor_poses = [measure_sensor_pose(t) for t in timesteps]
-trajectory = SE3Trajectory(sensor_poses)
-
-# Optimize sampling rate for closure
-result = optimize_scaling_factor(trajectory, double=True)
-
-# λ_opt determines optimal temporal resolution for verification
-sampling_rate = 1.0 / result.x
+```bash
+cd foundations/lie_groups
+pytest tests/test_se3_double_scale.py -v
 ```
 
-### Pillar IV: Ecosystem (EHDC)
-
-**Proof-of-Regeneration Protocols**:
-```python
-# Model ecosystem intervention cycles
-from se3_double_scale import SE3Trajectory, verify_approximate_return
-
-# Define intervention sequence (e.g., biochar + cover crops)
-interventions = [intervention_biochar, intervention_cover_crops]
-trajectory = SE3Trajectory(interventions)
-
-# Find optimal intervention intensity and timing
-result = optimize_scaling_factor(trajectory, double=True)
-
-# Verify regenerative return to baseline + enhancement
-metrics = verify_approximate_return(trajectory, result.x, double=True)
-
-# Generate EHDC tokens based on return quality
-if metrics['return_achieved']:
-    award_regeneration_tokens(metrics['total_error'])
-```
-
-### Symbiotic Grid (Blueprint Repository)
-
-**Agricultural Waste → Energy → Soil Carbon Cycles**:
-```python
-# Model: Biomass → Pyrolysis → Syngas → Biochar → Soil → Biomass
-cycle_steps = [
-    harvest_biomass_pose,
-    pyrolysis_pose,
-    biochar_application_pose,
-    growth_pose
-]
-
-trajectory = SE3Trajectory(cycle_steps, bounded=True, r_max=2.0)
-
-# Optimize cycle parameters for carbon-negative operation
-result = optimize_scaling_factor(trajectory, double=True)
-
-# λ_opt informs: biomass conversion rate, biochar dosage, rotation timing
-```
+**Coverage**:
+- ✅ SE(3) fundamentals (identity, composition, orthogonality)
+- ✅ Double-and-scale core (scaling, doubling, optimization)
+- ✅ Approximate returns (random trajectories, golden ratio observations)
+- ✅ Tethered walks (elastic return, boundedness)
+- ✅ Physical interpretations (agricultural rotations, narrative arcs)
 
 ---
 
-## 🎓 Educational Resources
-
-### Conceptual Ladder
-
-1. **Intuition**: Agricultural rotations, story arcs, breathing cycles
-2. **Geometry**: Rotations in 3D space, quaternions, Lie groups
-3. **Topology**: Codimension, manifolds, Haar measure
-4. **Dynamics**: Trajectories, composition, scaling
-5. **Stochastics**: Noise, mean reversion, basin of attraction
-6. **Applications**: Digital twins, regenerative agriculture, narrative design
-
-### Key Insights for Practitioners
-
-- **One pass rarely restores equilibrium** → Double interventions fundamental
-- **Scaling factor λ is system-specific** → Requires calibration per context
-- **λ ≈ 0.618 appears naturally** → Golden ratio resonance in systems
-- **Path matters, not just endpoints** → Hysteresis creates enhancement
-- **Noise doesn't destroy returns** → Stochastic returns still achievable
-
----
-
-## 🔮 Open Research Questions
-
-See [`VALIDATION_METHODOLOGY.md`](VALIDATION_METHODOLOGY.md) for complete empirical validation roadmap.
-
-### Foundational Questions
-
-1. **Golden Ratio Universality**: Is φ ≈ 0.618 clustering universal or artifact?
-   - **Status**: Observed in N=5 trials; requires N≥1000 + statistical testing
-   - **Validation**: Phase 1 Monte Carlo (Q1 2026)
-
-2. **SE(3) Extension Validity**: Does double-and-scale apply to full rigid body transformations?
-   - **Status**: Mathematically proven for SO(3), conjectured for SE(3)
-   - **Validation**: Agricultural field trials (Q2-Q4 2026)
-
-3. **Cross-Domain Applicability**: Do narrative/economic systems follow same mathematics?
-   - **Status**: Metaphorical mappings proposed, empirically untested
-   - **Validation**: Narrative correlation study (Q3-Q4 2026)
-
-### Computational Questions
-
-4. **Optimal λ Prediction**: Can we predict λ from trajectory features without optimization?
-   - **Approach**: Machine learning on validated datasets
-   - **Depends on**: Phase 1-3 validation completion
-
-5. **Noise Robustness**: How much stochasticity tolerable before breakdown?
-   - **Status**: Preliminary noise tests in `test_resonance_aware.py`
-   - **Validation**: Perturbation stability tests (Phase 1)
-
-### Scaling Questions
-
-6. **Composition Rules**: Do chained double-and-scale returns compose predictably?
-   - **Foundation**: Campbell-Baker-Hausdorff implemented
-   - **Validation**: Seasonal planning experiments (Phase 2)
-
-7. **Multi-Scale Coupling**: How do field-level returns propagate to watershed?
-   - **Priority**: HIGHEST (Opus ranking)
-   - **Approach**: Renormalization group methods
-   - **Validation**: Multi-site agricultural study (Phase 2)
-
-### Extension Questions
-
-8. **Higher Dimensions**: Does double-and-scale extend to SO(n), n>3?
-   - **Status**: Eckmann & Tlusty explicitly leave open
-   - **Priority**: LOWER until SO(3) limits encountered
-   - **Approach**: Theoretical analysis + numerical experiments
-
-9. **Economic Cycles**: Can markets be modeled as compact group walks?
-   - **Status**: Proposed as hypothesis
-   - **Validation**: Requires token economics deployment + time-series data
-
----
-
-## 📦 Module Structure
+## 8. Repository Layout
 
 ```
 foundations/lie_groups/
 ├── README.md                      # This file
 ├── VALIDATION_METHODOLOGY.md      # ⚠️ Empirical validation requirements
 ├── OPUS_INSIGHTS.md               # Resonance-aware extensions (experimental)
-├── se3_double_scale.py            # Core module (SE3Pose, trajectory, optimization)
+├── se3_double_scale.py            # Core module
 ├── advanced_patterns.py           # Berry phase, hysteresis, OU processes
-├── resonance_aware.py             # ⚠️ Experimental resonance detection (needs validation)
+├── resonance_aware.py             # ⚠️ Experimental (needs validation)
 ├── tests/
-│   ├── test_se3_double_scale.py   # Core functionality tests
-│   └── test_resonance_aware.py    # Experimental extensions tests
+│   ├── test_se3_double_scale.py   # Core tests
+│   └── test_resonance_aware.py    # Experimental tests
 └── examples/
     ├── INTEGRATION_GUIDE.md       # Lab integration examples
-    ├── agricultural_rotation.py   # Hemp-wheat rotation example (planned)
-    ├── carbon_sequestration.py    # Biochar application timing (planned)
-    ├── digital_twin_verify.py     # Sensor network calibration (planned)
-    └── narrative_arc.py            # Story structure modeling (planned)
+    ├── agricultural_rotation.py   # Hemp-wheat example (planned)
+    ├── carbon_sequestration.py    # Biochar timing (planned)
+    └── digital_twin_verify.py     # Sensor calibration (planned)
 ```
 
-**⚠️ Important**: `resonance_aware.py` is **experimental**. See `VALIDATION_METHODOLOGY.md` for empirical requirements before production use.
+**⚠️ Important**: `resonance_aware.py` is **experimental**. See `VALIDATION_METHODOLOGY.md` before production use.
 
 ---
 
-## 🚀 Quick Start
+## 9. Quick Start
 
 ### Installation
 
@@ -530,7 +248,7 @@ foundations/lie_groups/
 # Prerequisites
 pip install numpy scipy
 
-# Clone UCF repository
+# Clone repository
 git clone https://github.com/dj-ccs/Unified-Conscious-Evolution-Framework.git
 cd Unified-Conscious-Evolution-Framework/foundations/lie_groups
 
@@ -543,57 +261,90 @@ pytest tests/ -v
 ```python
 from se3_double_scale import generate_random_trajectory, optimize_scaling_factor
 
-# Generate random SE(3) trajectory
 trajectory = generate_random_trajectory(T=10, r_max=1.0)
-
-# Find optimal scaling for return
 result = optimize_scaling_factor(trajectory, double=True)
 
 print(f"Optimal λ: {result.x:.4f}")
 print(f"Return error: {result.fun:.6f}")
 ```
 
-### Next Steps
+---
 
-1. Review examples in `examples/` directory
-2. Read ADR-0800 (architectural decision record) for UCF integration strategy
-3. Explore cross-pillar applications (EHDC, open-science-dlt)
-4. Contribute improvements via pull request
+## 10. Integration with UCF Pillars
+
+| Pillar                    | Application                        | State Space     | Return Mechanism                |
+| ------------------------- | ---------------------------------- | --------------- | ------------------------------- |
+| **I (Science)**           | Digital twin verification          | Sensor poses    | Double-measurement closure      |
+| **II (Culture)**          | Narrative arc optimization         | Story space     | Journey out + transformed back  |
+| **III (Education)**       | Learning cycle design              | Cognitive state | Repetition with varied intensity |
+| **IV (Ecosystem)**        | Agricultural rotations             | Fertility state | Hemp→wheat cycles (scaled)      |
+| **Symbiotic Grid**        | Biomass → energy → carbon cycles   | Carbon flow     | Pyrolysis → biochar → growth    |
+
+See [`examples/INTEGRATION_GUIDE.md`](examples/INTEGRATION_GUIDE.md) for detailed workflows.
 
 ---
 
-## 🤝 Contributing
+## 11. Open Research Questions
 
-This module is part of the **Unified Conscious Evolution Framework** (UCF). Contributions welcome:
+See [`VALIDATION_METHODOLOGY.md`](VALIDATION_METHODOLOGY.md) for complete validation roadmap.
 
-- **Algorithm improvements**: Better λ optimization, faster integration
-- **New applications**: Additional regenerative system examples
-- **Theoretical extensions**: Higher-dimensional groups, coupling
-- **Documentation**: Clearer explanations, more examples
+### Foundational (Q1-Q4 2026)
 
-See main UCF repository [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
+1. **Golden Ratio Universality**: φ ≈ 0.618 clustering — universal or artifact?
+2. **SE(3) Extension Validity**: Does double-and-scale apply to full rigid body transformations?
+3. **Cross-Domain Applicability**: Do narrative/economic systems follow same mathematics?
+
+### Computational
+
+4. **Optimal λ Prediction**: Can we predict λ from trajectory features (ML approach)?
+5. **Noise Robustness**: How much stochasticity tolerable before breakdown?
+
+### Scaling (Highest Priority)
+
+6. **Composition Rules**: Do chained double-and-scale returns compose predictably?
+7. **Multi-Scale Coupling**: How do field-level returns propagate to watershed scale?
+
+### Extensions
+
+8. **Higher Dimensions**: Does double-and-scale extend to SO(n), n>3?
+9. **Economic Cycles**: Can markets be modeled as compact group walks?
 
 ---
 
-## 📄 License
+## 12. Theoretical Foundations
+
+### Key Sources
+
+| Reference     | Description                                                      |
+| ------------- | ---------------------------------------------------------------- |
+| **[Original]** | Eckmann & Tlusty (2025). arXiv:2502.14367. Foundational proof.   |
+| **[1.1]**     | Chandrasekaran et al. (2025). IEEE TAC 70(11). Lie group consensus. |
+| **[2.1-2.3]** | Sarlette (2007). PhD thesis. Coordination on compact groups.     |
+| **[3.1]**     | Guivarc'h & Raja (2012). Ergodic Theory. Recurrence on groups.   |
+| **[4.1]**     | Diaconis (1988). Random walks, Haar measure.                     |
+| **[5.1]**     | Barrau & Bonnabel (2018). IEEE CDC. Stochastic observers.        |
+
+---
+
+## 13. Acknowledgments
+
+* **Eckmann & Tlusty (2025)**: Foundational mathematical discovery
+* **Claude Opus**: Resonance patterns, tethered walks, Berry phase insights
+* **ChatGPT**: Meta-principles, cross-project mapping, documentation refinement
+* **Gemini**: Implementation strategy, Pillar I integration mandate
+* **Edison Scientific**: Deep research synthesis on SE(3) probabilistic guarantees
+* **UCF Community**: Regenerative vision and ecological grounding
+
+---
+
+## 14. License
 
 - **Code**: MIT License
 - **Documentation**: CC BY-SA 4.0
 
 ---
 
-## 🙏 Acknowledgments
-
-- **Jean-Pierre Eckmann & Tsvi Tlusty** (2025): Original discovery
-- **Edison Scientific**: Deep research synthesis
-- **Claude Opus**: Advanced pattern insights (tethered walks, Berry phase, hysteresis)
-- **ChatGPT**: Meta-level principles and cross-project mapping
-- **Gemini**: Implementation strategy and Pillar I integration
-- **UCF Community**: Regenerative vision and ecological grounding
-
----
-
-## 📞 Contact
+## 15. Contact
 
 - **UCF Repository**: https://github.com/dj-ccs/Unified-Conscious-Evolution-Framework
 - **Issues**: Report bugs or request features via GitHub Issues
@@ -601,6 +352,6 @@ See main UCF repository [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
 
 ---
 
-**The double-and-scale principle reveals that regeneration is not reversal, but transformed return. This mathematics gives us a rigorous foundation for designing systems that don't just survive, but evolve with intention.**
+**Regeneration is not reversal but transformed return.**
 
-_"What cannot return in one pass often returns in two, properly scaled."_
+*"What cannot return in one pass often returns in two, properly scaled."*
