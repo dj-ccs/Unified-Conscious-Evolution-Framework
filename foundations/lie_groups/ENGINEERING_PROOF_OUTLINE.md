@@ -5,7 +5,9 @@
 > "If you can prove the work, you are a mathematician.
 > If it works and you can show how it works, you are an engineer.
 > If it works and you can't show why it works, you are a developer."
-> — *Matt, correspondence 2025-11-11*
+> — *Matt, [see source](../appendices/PROOF_DIALOGUE.md)*
+
+For practical validation steps, see our [Validation Protocols](./VALIDATION_PROTOCOLS.md).
 
 ---
 
